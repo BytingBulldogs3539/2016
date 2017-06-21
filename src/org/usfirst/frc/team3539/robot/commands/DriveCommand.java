@@ -8,7 +8,6 @@ import org.usfirst.frc.team3539.robot.RobotMap;
  */
 public class DriveCommand extends BulldogCommand
 {
-	private boolean latch = false;
 
 	public DriveCommand()
 	{
@@ -25,25 +24,9 @@ public class DriveCommand extends BulldogCommand
 
 	protected void execute()
 	{
-		if (Robot.oi.onebuttona.get() && !latch)
-		{
-			latch = true;
-			Robot.driveTrain.changeGears();
-		} else if (!Robot.oi.onebuttona.get() && latch)
-		{
-			latch = false;
-		}
+		Robot.driveTrain.driveArcade(-Robot.oi.controller1.getRawAxis(RobotMap.Y_AxisL),
+				-Robot.oi.controller1.getRawAxis(RobotMap.X_AxisR));
 
-		if (Robot.oi.invertTrigger.get())
-		{
-			Robot.driveTrain.driveArcade(-1 * Robot.oi.controller1.getRawAxis(RobotMap.Y_AxisL),
-					Robot.oi.controller1.getRawAxis(RobotMap.X_AxisR));
-		}
-		else
-		{
-			Robot.driveTrain.driveArcade(Robot.oi.controller1.getRawAxis(RobotMap.Y_AxisL),
-					Robot.oi.controller1.getRawAxis(RobotMap.X_AxisR));
-		}
 	}
 
 	protected boolean isFinished()

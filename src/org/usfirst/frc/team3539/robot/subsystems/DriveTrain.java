@@ -11,13 +11,14 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * @author Kenny T.
  */
 @SuppressWarnings("unused")
-public class DriveTrain extends BulldogSystem
+public class DriveTrain extends Subsystem
 {
 	public CANTalon lfMotor, lbMotor, rfMotor, rbMotor;
 
@@ -80,16 +81,6 @@ public class DriveTrain extends BulldogSystem
 		rfMotor.setSafetyEnabled(false);
 		lbMotor.setSafetyEnabled(false);
 		rbMotor.setSafetyEnabled(false);
-
-		driveCan = new CANTalon(RobotMap.pcm);
-
-		manipulatorSol = new DoubleSolenoid(RobotMap.pcm, RobotMap.driveSolOn, RobotMap.driveSolOff);
-
-		manipulatorStatus = false;
-
-		manipulatorSol.set(DoubleSolenoid.Value.kOff);
-
-		this.zeroEncoders();
 	}
 
 	public void driveLinear(double speed)
@@ -162,40 +153,6 @@ public class DriveTrain extends BulldogSystem
 		//System.out.println(rightStick);
 	}
 
-	public void changeGears()
-	{
-		manipulatorStatus = !manipulatorStatus;
-
-		if (manipulatorStatus == true)
-		{
-			manipulatorSol.set(DoubleSolenoid.Value.kForward);
-		}
-		if (manipulatorStatus == false)
-		{
-			manipulatorSol.set(DoubleSolenoid.Value.kReverse);
-		}
-	}
-
-	@Deprecated
-	public double inchToEnc(double inch)
-	{
-		return inch * (4096 / (Math.PI * RobotMap.wheelDiameter));
-	}
-
-	public double inchToEnc2(double inch)
-	{
-		double output = inch * (4096 / (Math.PI * RobotMap.wheelDiameter) * RobotMap.driveMultiplier);
-		
-		System.out.println("Target Encoders for Drive: " + output);
-				
-		return output;
-	}
-
-	public double encToInch(double enc)
-	{
-		return enc * ((Math.PI * RobotMap.wheelDiameter) / 4096);
-	}
-
 	public void gyroReset()
 	{
 		gyro.reset();
@@ -205,79 +162,6 @@ public class DriveTrain extends BulldogSystem
 	public double getGyroAngle()
 	{
 		return gyro.getAngle();
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public void Update()
-	{
-
-		if (manipulatorStatus == true)
-		{
-			SmartDashboard.putString("Drive Gear", "High");
-		}
-		else
-		{
-			SmartDashboard.putString("Drive Gear", "Low");
-		}
-
-		SmartDashboard.putDouble("Gyro Velocity", gyro.getRate());
-
-		SmartDashboard.putDouble("Gryo Angle", getGyroAngle());
-		
-		 SmartDashboard.putDouble("--- Right Front", // from here
-		 rfMotor.getEncPosition());
-		 SmartDashboard.putDouble("--- Left Front", lfMotor.getEncPosition());
-		 SmartDashboard.putDouble("--- Right Back",
-		 rbMotor.getOutputCurrent());
-		 SmartDashboard.putDouble("--- Left Back",
-		 lbMotor.getOutputCurrent()); //to here
-
-		RobotMap.drivePea = SmartDashboard.getDouble("RobotMap.drivePea");
-		RobotMap.driveEye = SmartDashboard.getDouble("RobotMap.driveEye");
-		RobotMap.driveDee = SmartDashboard.getDouble("RobotMap.driveDee");
-
-		RobotMap.turnPea = SmartDashboard.getDouble("RobotMap.turnPea");
-		RobotMap.turnEye = SmartDashboard.getDouble("RobotMap.turnEye");
-		RobotMap.turnDee = SmartDashboard.getDouble("RobotMap.turnDee");
-
-		RobotMap.deadband = SmartDashboard.getDouble("Drive Deadband");
-
-		
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public void SmartInit()
-	{
-		SmartDashboard.putString("Drive Gear", "--");
-
-		SmartDashboard.putDouble("Gyro Velocity", 0);
-
-		SmartDashboard.putDouble("Gryo Angle", 0);
-		
-		 SmartDashboard.putDouble("--- Right Front",
-		 rfMotor.getOutputCurrent());
-		 SmartDashboard.putDouble("--- Left Front",
-		 lfMotor.getOutputCurrent());
-		 SmartDashboard.putDouble("--- Right Back",
-		 rbMotor.getOutputCurrent());
-		 SmartDashboard.putDouble("--- Left Back",
-		 lbMotor.getOutputCurrent());
-
-		SmartDashboard.putDouble("RobotMap.drivePea", RobotMap.drivePea);
-		SmartDashboard.putDouble("RobotMap.driveEye", RobotMap.driveEye);
-		SmartDashboard.putDouble("RobotMap.driveDee", RobotMap.driveDee);
-
-		SmartDashboard.putDouble("RobotMap.turnPea", RobotMap.turnPea);
-		SmartDashboard.putDouble("RobotMap.turnEye", RobotMap.turnEye);
-		SmartDashboard.putDouble("RobotMap.turnDee", RobotMap.turnDee);
-		SmartDashboard.putDouble("Drive Deadband", RobotMap.deadband);
-	}
-
-	public void defaultSetter()
-	{
-
 	}
 
 	public void initDefaultCommand()

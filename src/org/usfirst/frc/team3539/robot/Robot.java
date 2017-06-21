@@ -7,13 +7,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team3539.robot.CurvedAutons.LeftCurveHopper;
-import org.usfirst.frc.team3539.robot.CurvedAutons.LeftCurvePeg;
-import org.usfirst.frc.team3539.robot.CurvedAutons.RightCurvePeg;
-import org.usfirst.frc.team3539.robot.autoncommands.*;
-import org.usfirst.frc.team3539.robot.autongroups.*;
-import org.usfirst.frc.team3539.robot.calibration.*;
 import org.usfirst.frc.team3539.robot.commands.*;
 import org.usfirst.frc.team3539.robot.subsystems.*;
 
@@ -28,14 +21,10 @@ import org.usfirst.frc.team3539.robot.subsystems.*;
 public class Robot extends IterativeRobot
 {
 	// SUBSYSTEMS
-	public static final HoodSubsystem hoodSubsystem = new HoodSubsystem();
 	public static final DriveTrain driveTrain = new DriveTrain();
 	public static final Shooter shooter = new Shooter();
-	public static final Intake intake = new Intake();
-	public static final GearManipulator manipulator = new GearManipulator();
-	public static Raspberry raspberry;
+	public static final Arm arm = new Arm();
 
-	public static Compressor c;
 	public static OI oi;
 	// public static UsbCamera camera;
 
@@ -44,14 +33,7 @@ public class Robot extends IterativeRobot
 
 	public void robotInit()
 	{
-		c = new Compressor(RobotMap.compressor);
-
 		oi = new OI();
-		c.stop();
-		raspberry = new Raspberry();
-
-		SmartInit();
-		Update();
 
 		// camera = CameraServer.getInstance().startAutomaticCapture();
 		// camera.setResolution(480, 360);
@@ -80,15 +62,13 @@ public class Robot extends IterativeRobot
 	{
 		// BulldogLogger.getInstance().logInfo("autonomousInit");
 		System.out.println("autonomousInit");
-		Update();
+	
 
-		raspberry.setCamera(RobotMap.gearCamera);
 
 		autonMode = (Command) autonChooser.getSelected();
 		if (autonMode != null)
 		{
 			System.out.println("Here");
-			
 
 			autonMode.start();
 		}
@@ -100,106 +80,24 @@ public class Robot extends IterativeRobot
 	public void autonomousPeriodic()
 	{
 		Scheduler.getInstance().run();
-		Update();
+	
 	}
 
 	public void teleopInit()
 	{
 		System.out.println("teleopInit");
-		raspberry.setCamera(RobotMap.gearCamera);
-		Robot.manipulator.holderClose();
 	}
 
 	// This function is called periodically during operator control
 	public void teleopPeriodic()
 	{
 		Scheduler.getInstance().run();
-		Update();
+
 	}
 
 	// This function is called periodically during test mode
 	public void testPeriodic()
 	{
-		Update();
 		LiveWindow.run();
-	}
-
-	public void Update()
-	{
-		
-		oi.Update();
-		intake.Update();
-		shooter.Update();
-		manipulator.Update();
-		driveTrain.Update();
-		hoodSubsystem.Update();
-		raspberry.Update();
-	}
-
-	public void SmartInit()
-	{
-		oi.SmartInit();
-		intake.SmartInit();
-		shooter.SmartInit();
-		manipulator.SmartInit();
-		driveTrain.SmartInit();
-		hoodSubsystem.SmartInit();
-		raspberry.SmartInit();
-		SmartDashboard.putDouble("Interval Rate", .12);
-		
-		SmartDashboard.putData(new LeftCurvePeg());
-		SmartDashboard.putData(new RightCurvePeg());
-		SmartDashboard.putData(new LeftCurveHopper());
-		
-		SmartDashboard.putData(new VisionGearMiddle());
-		SmartDashboard.putData(new VisionTest());
-		SmartDashboard.putData(new TurnCalibrate());
-
-		autonChooser = new SendableChooser<Command>();
-
-		SmartDashboard.putData("Auton mode", autonChooser);
-		autonChooser.addDefault("No Auton, Default", new VoidCommand());
-		autonChooser.addObject("Auton Turn 180", new AutonTurn(180));
-
-		// Calibrate\/
-		autonChooser.addObject("Drive Calibrate", new DriveCalibrate());
-		autonChooser.addObject("Turn Calibrate", new TurnCalibrate());
-
-		// Gear\/
-		autonChooser.addObject("GearMiddleGroup", new GearMiddleGroup());
-		autonChooser.addObject("GearLeftGroup", new GearLeftGroup());
-		autonChooser.addObject("GearRightGroup", new GearRightGroup());
-
-		// Red\/
-
-		autonChooser.addObject("RedShootMiddle", new RedShootMiddle());
-		autonChooser.addObject("RedHopper", new RedHopper());
-		autonChooser.addObject("RedShootOutside", new RedShootOutside());
-		autonChooser.addObject("RedShootInside", new RedShootInside());
-
-		// Blue\/
-
-		autonChooser.addObject("BlueShootMiddle", new BlueShootMiddle());
-		autonChooser.addObject("BlueHopper", new BlueHopper());
-		autonChooser.addObject("BlueShootOutside", new BlueShootOutside());
-		autonChooser.addObject("BlueShootInside", new BlueShootInside());
-
-		// test
-		autonChooser.addObject("VisionGearMiddle", new VisionGearMiddle());
-		autonChooser.addObject("VisionTuning", new JoeyShoot(7));
-		autonChooser.addObject("NoneForward", new NoneForward());
-		autonChooser.addObject("Trajectory", new FollowTrejectory());
-
-		SmartDashboard.putData(shooter);
-		SmartDashboard.putData(intake);
-		SmartDashboard.putData(manipulator);
-		SmartDashboard.putData(driveTrain);
-		SmartDashboard.putData(new TestMaxVel());
-		SmartDashboard.putData(new ZeroHoodCommand());
-
-		SmartDashboard.putData(new DriveCalibrate());
-		SmartDashboard.putData(new TurnCalibrate());
-		SmartDashboard.putData(new FollowTrejectory());
-		SmartDashboard.putData(Scheduler.getInstance());
 	}
 }
