@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team3539.robot;
 import org.usfirst.frc.team3539.robot.commands.ArmMoveX;
 import org.usfirst.frc.team3539.robot.commands.ArmMoveY;
