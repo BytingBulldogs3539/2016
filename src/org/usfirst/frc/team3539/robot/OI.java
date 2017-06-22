@@ -56,7 +56,7 @@ public class OI
 	public OI()
 	{
 		onebuttonx.whenPressed(new ArmMoveX(.5));
-		onebuttony.whenPressed(new ArmMoveY(-.5));
+		onebuttony.whenPressed(new ArmMoveY(-.7));
 		
 		onebuttona.whenPressed(new ShootCommand(1, 1, 1));
 		onebuttonb.whenPressed(new ControlB(1));
