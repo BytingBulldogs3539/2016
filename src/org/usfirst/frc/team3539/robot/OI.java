@@ -1,13 +1,11 @@
 
 package org.usfirst.frc.team3539.robot;
-import org.usfirst.frc.team3539.robot.commands.ArmMoveX;
-import org.usfirst.frc.team3539.robot.commands.ArmMoveY;
-import org.usfirst.frc.team3539.robot.commands.ControlA;
-import org.usfirst.frc.team3539.robot.commands.ControlB;
-import org.usfirst.frc.team3539.robot.commands.IntakeCommand;
+
+import org.usfirst.frc.team3539.robot.commands.ArmMove;
+import org.usfirst.frc.team3539.robot.commands.ArmStop;
+import org.usfirst.frc.team3539.robot.commands.Wheels;
+import org.usfirst.frc.team3539.robot.commands.WheelStop;
 import org.usfirst.frc.team3539.robot.commands.ShootCommand;
-//import org.usfirst.frc.team3539.robot.commands.WindL;
-import org.usfirst.frc.team3539.robot.commands.WindR;
 import org.usfirst.frc.team3539.robot.utilities.TriggerButton;
 import org.usfirst.frc.team3539.robot.utilities.DpadButton;
 
@@ -29,41 +27,44 @@ public class OI
 	public JoystickButton onebuttony = new JoystickButton(controller1, RobotMap.buttony);
 	public JoystickButton onebuttona = new JoystickButton(controller1, RobotMap.buttona);
 	public JoystickButton onebuttonb = new JoystickButton(controller1, RobotMap.buttonb);
-	
-	
 
 	public JoystickButton onebumperl = new JoystickButton(controller1, RobotMap.bumperl);
 	public JoystickButton onebumperr = new JoystickButton(controller1, RobotMap.bumperr);
 
-	
-	
 	public JoystickButton twobuttonStart = new JoystickButton(controller2, RobotMap.buttonStart);
-	
-	
+
 	public JoystickButton twobuttonx = new JoystickButton(controller2, RobotMap.buttonx);
 	public JoystickButton twobuttony = new JoystickButton(controller2, RobotMap.buttony);
 	public JoystickButton twobuttona = new JoystickButton(controller2, RobotMap.buttona);
 	public JoystickButton twobuttonb = new JoystickButton(controller2, RobotMap.buttonb);
-	
+
 	public JoystickButton twotriggerl = new JoystickButton(controller2, RobotMap.LEFT_TRIGGER);
 	public JoystickButton twotriggerr = new JoystickButton(controller2, RobotMap.RIGHT_TRIGGER);
-	
-	public JoystickButton twobuttonLS = new JoystickButton (controller2, RobotMap.buttonLS);
-	public JoystickButton twobuttonRS = new JoystickButton (controller2, RobotMap.buttonRS);
+
+	public JoystickButton twobuttonLS = new JoystickButton(controller2, RobotMap.buttonLS);
+	public JoystickButton twobuttonRS = new JoystickButton(controller2, RobotMap.buttonRS);
 
 	public JoystickButton twobumperl = new JoystickButton(controller2, RobotMap.bumperl);
 	public JoystickButton twobumperr = new JoystickButton(controller2, RobotMap.bumperr);
 
 	public OI()
 	{
-		onebuttonx.whenPressed(new ArmMoveX(.5));
-		onebuttony.whenPressed(new ArmMoveY(-.5));
-		
-		onebuttona.whenPressed(new ShootCommand(1, 1, 1));
-		onebuttonb.whenPressed(new ControlB(1));
-		
-		onebumperl.whenPressed(new IntakeCommand(-1, 1));
-		
-		onebumperr.whenPressed(new WindR(1));
+		onebuttonx.whenPressed(new ArmMove(-.3));
+		onebuttonx.whenReleased(new ArmStop());
+
+		onebuttony.whenPressed(new ArmMove(.5));
+		onebuttony.whenReleased(new ArmStop());
+
+		onebuttona.whenPressed(new Wheels(-.7, -.7, 0));
+		onebuttona.whenReleased(new WheelStop());
+
+		onebuttonb.whenPressed(new Wheels(.8, .8, 2));
+		onebuttonb.whenReleased(new WheelStop());
+
+		// onebuttonb.whenPressed(new ControlB(1));
+		//
+		// onebumperl.whenPressed(new IntakeStart(-1, 1));
+		//
+		// onebumperr.whenPressed(new WindR(1));
 	}
 }

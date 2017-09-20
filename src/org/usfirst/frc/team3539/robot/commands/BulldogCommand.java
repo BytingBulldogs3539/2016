@@ -2,6 +2,7 @@ package org.usfirst.frc.team3539.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+import org.usfirst.frc.team3539.robot.Robot;
 // Standard Java libraries
 import org.usfirst.frc.team3539.robot.utilities.*;
 
@@ -13,32 +14,33 @@ import org.usfirst.frc.team3539.robot.utilities.*;
  */
 public abstract class BulldogCommand extends Command
 {
+	String name;
+	
 	public BulldogCommand(String name)
 	{
 		super(name);
+		this.name = name;
 	}
 	
-	/**
-	 * Initialize the command
-	 * 
-	 * @param name - Name of the command being initialized
-	 */
-	protected void initialize(String name)
+	protected void initializes()
 	{
 		super.initialize();
-		
-		//BulldogLogger.getInstance().logDebug("Initializing " + name);
+		BulldogLogger.getInstance().logCommand(this.name + " Initialized");
 	}
 	
-	/**
-	 * Clean up
-	 * 
-	 * @param name - Name of the Command that is ended
-	 */
-	protected void end(String name)
+	protected void end()
 	{
 		super.end();
+		BulldogLogger.getInstance().logCommand(this.name + " Ended");
 
-		//BulldogLogger.getInstance().logDebug("Ending " + name);
+		BulldogLogger.getInstance().logInfo("Ending " + this.name);
+	}
+	
+	protected void interrupted()
+	{
+		super.interrupted();
+		BulldogLogger.getInstance().logCommand(this.name + " interrupted");
+
+		BulldogLogger.getInstance().logInfo("Interrupting " + this.name);
 	}
 }

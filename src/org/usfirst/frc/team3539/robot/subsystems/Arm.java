@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class Arm extends Subsystem
+public class Arm extends BulldogSystem
 {
 	private CANTalon armMotor;
 	private CANTalon armMotorTwo;
@@ -29,11 +29,24 @@ public class Arm extends Subsystem
 	public void setMotorPower(double power)
 	{
 		armMotor.set(power);
-		
+		System.out.println("ENC POSITION " + armMotor.getEncPosition());
 		armMotorTwo.set(-power);
 	}
 
 	public void initDefaultCommand()
 	{
 	}
+	
+	public void SmartInit()
+	{
+	}
+	
+
+	@Override
+	public void Update()
+	{
+		// TODO Auto-generated method stub
+		
+	}	
+	
 }

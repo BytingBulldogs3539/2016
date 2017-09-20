@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Shooter extends Subsystem
+public class Shooter extends BulldogSystem
 {
 	private CANTalon controlWheel;
 	private CANTalon flyWheel;
@@ -38,5 +38,19 @@ public class Shooter extends Subsystem
 
 	public void initDefaultCommand()
 	{
+	}
+
+	@Override
+	public void Update()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void SmartInit()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

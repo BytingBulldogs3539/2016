@@ -9,38 +9,41 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ControlB extends Command
+public class ArmMove extends BulldogCommand
 {
 	private double power = 0;
 	
-    public ControlB(double power)
+    public ArmMove(double power)
     {
-    	this.power = power;
+    	super("ArmMove");
+    	this.power = -power;
     }
 
     protected void initialize()
     {
-        System.out.println("");
+    	super.initialize();
     }
 
     protected void execute()
     {
-    	Robot.shooter.setControlPower(power);
+    	super.execute();
+    	Robot.arm.setMotorPower(power);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished()
     {
-        return !Robot.oi.onebuttonb.get();
+        return true;
     }
 
     protected void end()
     {
-        Robot.shooter.setControlPower(0);
+    	super.end();
     }
 
     protected void interrupted()
     {
+    	super.interrupted();
         end();
     }
 }

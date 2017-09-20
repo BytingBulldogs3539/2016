@@ -17,16 +17,17 @@ public class DriveCommand extends BulldogCommand
 
 	protected void initialize()
 	{
-		super.initialize("DriveCommand");
+		super.initialize();
 		System.out.println("DriveCommand was initialized");
 		Robot.driveTrain.talonControlVBus();
+		
 	}
 
 	protected void execute()
 	{
-		Robot.driveTrain.driveArcade(-Robot.oi.controller1.getRawAxis(RobotMap.Y_AxisL),
-				-Robot.oi.controller1.getRawAxis(RobotMap.X_AxisR));
-
+		double x = Robot.oi.controller1.getRawAxis(RobotMap.RIGHT_TRIGGER)-Robot.oi.controller1.getRawAxis(RobotMap.LEFT_TRIGGER);
+		super.execute();
+		Robot.driveTrain.driveArcade(x, -Robot.oi.controller1.getRawAxis(RobotMap.X_AxisL));
 	}
 
 	protected boolean isFinished()
@@ -36,12 +37,12 @@ public class DriveCommand extends BulldogCommand
 
 	protected void end()
 	{
-		super.end("DriveCommand");
-		System.out.println("DriveCommand was ended");
+		super.end();
 	}
 
 	protected void interrupted()
 	{
+		super.interrupted();
 		end();
 	}
 }

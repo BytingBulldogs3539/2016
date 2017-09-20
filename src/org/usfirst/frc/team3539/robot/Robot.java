@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3539.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -9,6 +10,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team3539.robot.commands.*;
 import org.usfirst.frc.team3539.robot.subsystems.*;
+import org.usfirst.frc.team3539.robot.subsystems.Shooter;
+import org.usfirst.frc.team3539.robot.utilities.BulldogLogger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,6 +23,7 @@ import org.usfirst.frc.team3539.robot.subsystems.*;
 
 public class Robot extends IterativeRobot
 {
+
 	// SUBSYSTEMS
 	public static final DriveTrain driveTrain = new DriveTrain();
 	public static final Shooter shooter = new Shooter();
@@ -34,11 +38,6 @@ public class Robot extends IterativeRobot
 	public void robotInit()
 	{
 		oi = new OI();
-
-		// camera = CameraServer.getInstance().startAutomaticCapture();
-		// camera.setResolution(480, 360);
-
-		// BulldogLogger.getInstance().logInfo("Starting robotInit");
 	}
 
 	/**
@@ -48,7 +47,8 @@ public class Robot extends IterativeRobot
 	 **/
 	public void disabledInit()
 	{
-		// BulldogLogger.getInstance().finishLogging();
+		BulldogLogger.getInstance().logInfo("----DISABLEINIT----");
+
 		Scheduler.getInstance().run();
 
 	}
@@ -56,14 +56,15 @@ public class Robot extends IterativeRobot
 	public void disabledPeriodic()
 	{
 		Scheduler.getInstance().run();
+		// System.out.println("disabled period");
+
 	}
 
 	public void autonomousInit()
 	{
-		// BulldogLogger.getInstance().logInfo("autonomousInit");
-		System.out.println("autonomousInit");
-	
+		BulldogLogger.getInstance().logInfo("----AUTONINIT----");
 
+		System.out.println("autonomousInit");
 
 		autonMode = (Command) autonChooser.getSelected();
 		if (autonMode != null)
@@ -80,12 +81,12 @@ public class Robot extends IterativeRobot
 	public void autonomousPeriodic()
 	{
 		Scheduler.getInstance().run();
-	
+
 	}
 
 	public void teleopInit()
 	{
-		System.out.println("teleopInit");
+		BulldogLogger.getInstance().logInfo("----TELEOPINIT----");
 	}
 
 	// This function is called periodically during operator control

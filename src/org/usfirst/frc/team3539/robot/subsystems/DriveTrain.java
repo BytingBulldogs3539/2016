@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Kenny T.
  */
 @SuppressWarnings("unused")
-public class DriveTrain extends Subsystem
+public class DriveTrain extends BulldogSystem
 {
 	public CANTalon lfMotor, lbMotor, rfMotor, rbMotor;
 
@@ -172,5 +172,19 @@ public class DriveTrain extends Subsystem
 	public void stopTrain()
 	{
 		drive.arcadeDrive(0, 0);
+	}
+
+	@Override
+	public void Update()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void SmartInit()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
