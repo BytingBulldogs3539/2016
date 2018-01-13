@@ -4,83 +4,93 @@ import org.usfirst.frc.team3539.robot.Robot;
 import org.usfirst.frc.team3539.robot.RobotMap;
 import org.usfirst.frc.team3539.robot.commands.DriveCommand;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase;
+
 
 /**
- * @author Kenny T.
+ * @author Domink D
  */
 @SuppressWarnings("unused")
 public class DriveTrain extends BulldogSystem
 {
-	public CANTalon lfMotor, lbMotor, rfMotor, rbMotor;
+	public WPI_TalonSRX lfMotor, lbMotor, rfMotor, rbMotor;
 
-	private CANTalon driveCan;
-
-	private RobotDrive drive;
+	private TalonSRX driveCan;
+	private DifferentialDrive drive;
+	private RobotDrive d;
 	private DoubleSolenoid manipulatorSol;
 	private boolean manipulatorStatus;
 	private ADXRS450_Gyro gyro;
-
+	//private RobotBase drive;
 	public DriveTrain()
 	{
 		super("DriveTrain");
 
 		gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
-		lfMotor = new CANTalon(RobotMap.lfMotorTalon);
-		lbMotor = new CANTalon(RobotMap.lbMotorTalon);
-		rfMotor = new CANTalon(RobotMap.rfMotorTalon);
-		rbMotor = new CANTalon(RobotMap.rbMotorTalon);
+		lfMotor = new WPI_TalonSRX(RobotMap.lfMotorTalon);
+		lbMotor = new WPI_TalonSRX(RobotMap.lbMotorTalon);
+		rfMotor = new WPI_TalonSRX(RobotMap.rfMotorTalon);
+		rbMotor = new WPI_TalonSRX(RobotMap.rbMotorTalon);
 
-		lfMotor.changeControlMode(TalonControlMode.PercentVbus);
-		rfMotor.changeControlMode(TalonControlMode.PercentVbus);
+		lfMotor.set(ControlMode.PercentOutput,0.0);
+		rfMotor.set(ControlMode.PercentOutput,0.0);
 		// rbMotor.changeControlMode(TalonControlMode.PercentVbus);
 		// lbMotor.changeControlMode(TalonControlMode.PercentVbus);
-
-		rbMotor.changeControlMode(TalonControlMode.Follower);
-		lbMotor.changeControlMode(TalonControlMode.Follower);
-
-		rbMotor.set(rfMotor.getDeviceID());
-		lbMotor.set(lfMotor.getDeviceID());
-
-		lfMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-		rfMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+//******************
+		rbMotor.set(ControlMode.Follower,rfMotor.getDeviceID());
+	lbMotor.set(ControlMode.Follower, lfMotor.getDeviceID());
+//*******************
+		lfMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		rfMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		// rbMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
 		// lbMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		lfMotor.configNominalOutputForward(1, 0);
+		lfMotor.configNominalOutputReverse(-1, 0);
+		rfMotor.configNominalOutputForward(1, 0);
+		rfMotor.configNominalOutputReverse(-1, 0);
 
-		lfMotor.configNominalOutputVoltage(0.0f, -0.0f);
-		lfMotor.configPeakOutputVoltage(12.0f, -12.0f);
+	
+	
+		lfMotor.configPeakOutputForward(1, 0);
+		lfMotor.configPeakOutputReverse(-1, 0);
+		rfMotor.configPeakOutputForward(1, 0);
+		rfMotor.configPeakOutputReverse(-1, 0);
+		rfMotor.configContinuousCurrentLimit(35,0);
+		lfMotor.configContinuousCurrentLimit(35,0);
+		lfMotor.enableCurrentLimit(true);
+		rfMotor.enableCurrentLimit(true);
 
-		rfMotor.configNominalOutputVoltage(0.0f, -0.0f);
-		rfMotor.configPeakOutputVoltage(12.0f, -12.0f);
-
-		lfMotor.configMaxOutputVoltage(12);
-		rfMotor.configMaxOutputVoltage(12);
-		rfMotor.setCurrentLimit(35);
-		lfMotor.setCurrentLimit(35);
-
-		lfMotor.EnableCurrentLimit(true);
-		rfMotor.EnableCurrentLimit(true);
-
-		lfMotor.enableBrakeMode(true);
-		rfMotor.enableBrakeMode(true);
-
-		drive = new RobotDrive(lfMotor, rfMotor);
+		lfMotor.setNeutralMode(NeutralMode.Brake);
+		rfMotor.setNeutralMode(NeutralMode.Brake);
+		
+		 drive = new DifferentialDrive(rfMotor,lfMotor);
+		//RobotBase drive = new RobotBase(lfMotor, rfMotor);
+		//drive = new RobotDrive(lfMotor, rfMotor);
 		// drive = new RobotDrive(lfMotor, lbMotor, rfMotor, rbMotor);
-		drive.setSafetyEnabled(false);
-
-		lfMotor.setSafetyEnabled(false);
-		rfMotor.setSafetyEnabled(false);
-		lbMotor.setSafetyEnabled(false);
-		rbMotor.setSafetyEnabled(false);
+		//drive.setSafetyEnabled(false);
+//
+//		lfMotor.setSafetyEnabled(false);
+//		rfMotor.setSafetyEnabled(false);
+//		lbMotor.setSafetyEnabled(false);
+//		rbMotor.setSafetyEnabled(false);
 	}
 
 	public void driveLinear(double speed)
@@ -104,16 +114,16 @@ public class DriveTrain extends BulldogSystem
 
 	public double getBalancedEncoderPosition()
 	{
-		return (lfMotor.getEncPosition() - rfMotor.getEncPosition()) / 2;
+		return 0; //(lfMotor.getEncPosition() - rfMotor.getEncPosition()) / 2;
 	}
 	public int getRightEnc()
 	{
-		return rfMotor.getEncPosition();
+		return 0;// rfMotor.getEncPosition();
 		//return rfMotor.getPulseWidthPosition();
 	}
 	public int getLeftEnc()
 	{
-		return lfMotor.getEncPosition();
+		return 0; //lfMotor.getEncPosition();
 		//return lfMotor.getPulseWidthPosition();
 		
 	}
@@ -124,31 +134,35 @@ public class DriveTrain extends BulldogSystem
 		// rfMotor.setEncPosition(0);
 		// rbMotor.setEncPosition(0);
 		// lbMotor.setEncPosition(0);
-
-		lfMotor.setPosition(0);
-		rfMotor.setPosition(0);
+//
+//		lfMotor.setPosition(0);
+//		rfMotor.setPosition(0);
 		// rbMotor.setPosition(0);
 		// lbMotor.setPosition(0);
 	}
 
 	public void disablePIDControl()
 	{
-		lfMotor.disableControl();
-		rfMotor.disableControl();
+//		lfMotor.disableControl();
+//		rfMotor.disableControl();
 		// lbMotor.disableControl();
 		// rbMotor.disableControl();
 	}
 
 	public void talonControlVBus()
 	{
-		lfMotor.changeControlMode(TalonControlMode.PercentVbus);
-		rfMotor.changeControlMode(TalonControlMode.PercentVbus);
+		rfMotor.set(ControlMode.PercentOutput,rfMotor.getDeviceID());
+		lfMotor.set(ControlMode.PercentOutput,lfMotor.getDeviceID());
+
+//		lfMotor.changeControlMode(TalonControlMode.PercentVbus);
+//		rfMotor.changeControlMode(TalonControlMode.PercentVbus);
 		// lbMotor.changeControlMode(TalonControlMode.PercentVbus);
 		// rbMotor.changeControlMode(TalonControlMode.PercentVbus);
 	}
 
 	public void driveArcade(double leftStick, double rightStick)
 	{
+		
 		drive.arcadeDrive(leftStick, rightStick);
 		//System.out.println(rightStick);
 	}

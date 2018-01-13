@@ -3,10 +3,12 @@ package org.usfirst.frc.team3539.robot.commands;
 import org.usfirst.frc.team3539.robot.Robot;
 import org.usfirst.frc.team3539.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.command.Command;
+
 /**
  *
  */
-public class DriveCommand extends BulldogCommand
+public class DriveCommand extends Command
 {
 
 	public DriveCommand()
@@ -25,9 +27,11 @@ public class DriveCommand extends BulldogCommand
 
 	protected void execute()
 	{
-		double x = Robot.oi.controller1.getRawAxis(RobotMap.RIGHT_TRIGGER)-Robot.oi.controller1.getRawAxis(RobotMap.LEFT_TRIGGER);
 		super.execute();
-		Robot.driveTrain.driveArcade(x, -Robot.oi.controller1.getRawAxis(RobotMap.X_AxisL));
+	Robot.driveTrain.driveArcade(Robot.oi.controller1.getRawAxis(RobotMap.Y_AxisL), Robot.oi.controller1.getRawAxis(RobotMap.X_AxisR));
+	System.out.print(Robot.oi.controller1.getRawAxis(RobotMap.Y_AxisL));
+	System.out.print(Robot.oi.controller1.getRawAxis(RobotMap.X_AxisR));
+
 	}
 
 	protected boolean isFinished()
@@ -37,7 +41,8 @@ public class DriveCommand extends BulldogCommand
 
 	protected void end()
 	{
-		super.end();
+Robot.driveTrain.stopTrain();
+super.end();
 	}
 
 	protected void interrupted()

@@ -1,7 +1,6 @@
 package org.usfirst.frc.team3539.robot.commands;
 
 import org.usfirst.frc.team3539.robot.Robot;
-import org.usfirst.frc.team3539.robot.utilities.BulldogLogger;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -41,7 +40,6 @@ public class ShootCommand extends BulldogCommand
 		if (this.timer >= this.expectedtime)
 		{
 			Robot.shooter.setFlyWheel(this.kickspeed);
-			BulldogLogger.getInstance().logEvent("cute text");
 		}
 
 	}

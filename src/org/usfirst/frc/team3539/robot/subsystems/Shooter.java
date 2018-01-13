@@ -3,8 +3,7 @@ package org.usfirst.frc.team3539.robot.subsystems;
 import org.usfirst.frc.team3539.robot.Robot;
 import org.usfirst.frc.team3539.robot.RobotMap;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -12,18 +11,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends BulldogSystem
 {
-	private CANTalon controlWheel;
-	private CANTalon flyWheel;
+	private WPI_TalonSRX controlWheel;
+	private WPI_TalonSRX flyWheel;
 
 	public Shooter()
 	{
 		super("Shooter");
-		controlWheel = new CANTalon(RobotMap.controlWheel);
+		controlWheel = new WPI_TalonSRX(RobotMap.controlWheel);
 		
 		
-		flyWheel = new CANTalon(RobotMap.flyWheel);
-		flyWheel.EnableCurrentLimit(true);
-		flyWheel.setCurrentLimit(35);
+		flyWheel = new WPI_TalonSRX(RobotMap.flyWheel);
+	flyWheel.configContinuousCurrentLimit(35,0);
 	}
 	
 	public void setControlPower(double power)
