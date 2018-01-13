@@ -28,9 +28,9 @@ public class DriveCommand extends Command
 	protected void execute()
 	{
 		super.execute();
-	Robot.driveTrain.driveArcade(Robot.oi.controller1.getRawAxis(RobotMap.Y_AxisL), Robot.oi.controller1.getRawAxis(RobotMap.X_AxisR));
-	System.out.print(Robot.oi.controller1.getRawAxis(RobotMap.Y_AxisL));
-	System.out.print(Robot.oi.controller1.getRawAxis(RobotMap.X_AxisR));
+		double x = Robot.oi.controller1.getRawAxis(RobotMap.RIGHT_TRIGGER)-Robot.oi.controller1.getRawAxis(RobotMap.LEFT_TRIGGER);
+	
+		Robot.driveTrain.driveArcade(-x, Robot.oi.controller1.getRawAxis(RobotMap.X_AxisL));
 
 	}
 
