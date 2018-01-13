@@ -1,6 +1,5 @@
 package org.usfirst.frc.team3539.robot.subsystems;
 
-import org.usfirst.frc.team3539.robot.utilities.BulldogLogger;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -21,7 +20,7 @@ public abstract class BulldogSystem extends Subsystem
 	public BulldogSystem(String name)
 	{
 		super(name);
-		BulldogLogger.getInstance().logEvent(name + " Constructed");
+	//	BulldogLogger.getInstance().logEvent(name + " Constructed");
 	}
 	
 	/**

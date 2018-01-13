@@ -25,22 +25,22 @@ public abstract class BulldogCommand extends Command
 	protected void initializes()
 	{
 		super.initialize();
-		BulldogLogger.getInstance().logCommand(this.name + " Initialized");
+		//BulldogLogger.getInstance().logCommand(this.name + " Initialized");
 	}
 	
 	protected void end()
 	{
 		super.end();
-		BulldogLogger.getInstance().logCommand(this.name + " Ended");
+		//BulldogLogger.getInstance().logCommand(this.name + " Ended");
 
-		BulldogLogger.getInstance().logInfo("Ending " + this.name);
+		//BulldogLogger.getInstance().logInfo("Ending " + this.name);
 	}
 	
 	protected void interrupted()
 	{
 		super.interrupted();
-		BulldogLogger.getInstance().logCommand(this.name + " interrupted");
+		//BulldogLogger.getInstance().logCommand(this.name + " interrupted");
 
-		BulldogLogger.getInstance().logInfo("Interrupting " + this.name);
+		//BulldogLogger.getInstance().logInfo("Interrupting " + this.name);
 	}
 }

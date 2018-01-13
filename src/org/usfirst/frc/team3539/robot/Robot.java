@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team3539.robot.commands.*;
 import org.usfirst.frc.team3539.robot.subsystems.*;
 import org.usfirst.frc.team3539.robot.subsystems.Shooter;
-import org.usfirst.frc.team3539.robot.utilities.BulldogLogger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -47,7 +46,7 @@ public class Robot extends IterativeRobot
 	 **/
 	public void disabledInit()
 	{
-		BulldogLogger.getInstance().logInfo("----DISABLEINIT----");
+	//	BulldogLogger.getInstance().logInfo("----DISABLEINIT----");
 
 		Scheduler.getInstance().run();
 
@@ -62,7 +61,7 @@ public class Robot extends IterativeRobot
 
 	public void autonomousInit()
 	{
-		BulldogLogger.getInstance().logInfo("----AUTONINIT----");
+	//	BulldogLogger.getInstance().logInfo("----AUTONINIT----");
 
 		System.out.println("autonomousInit");
 
@@ -86,7 +85,7 @@ public class Robot extends IterativeRobot
 
 	public void teleopInit()
 	{
-		BulldogLogger.getInstance().logInfo("----TELEOPINIT----");
+	//	BulldogLogger.getInstance().logInfo("----TELEOPINIT----");
 	}
 
 	// This function is called periodically during operator control
